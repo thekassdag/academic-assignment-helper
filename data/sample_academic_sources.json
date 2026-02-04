@@ -1,0 +1,10 @@
+[
+  {
+    "title": "A sample academic paper",
+    "authors": "John Doe, Jane Smith",
+    "publication_year": 2023,
+    "abstract": "This is a sample abstract for a paper on a fascinating topic.",
+    "full_text": "This is the full text of the sample paper. It would contain many words and paragraphs.",
+    "source_type": "paper"
+  }
+]
