@@ -1,5 +1,9 @@
 # Academic Assignment Helper & Plagiarism Detector (RAG-Powered)
 
+<img width="1629" height="580" alt="Screenshot from 2026-02-09 10-11-52" src="https://github.com/user-attachments/assets/7f5d2467-f5f9-4e2d-8e0a-aa2e02bfc395" />
+<img width="1456" height="531" alt="Screenshot from 2026-02-09 10-10-17" src="https://github.com/user-attachments/assets/8994b1c1-c124-4387-9872-28493a63d7c4" />
+
+
 This project is a comprehensive backend system designed to assist with academic assignments by providing research source suggestions and plagiarism detection. It is powered by a Retrieval-Augmented Generation (RAG) pipeline and orchestrated using Docker.
 
 ## Features
