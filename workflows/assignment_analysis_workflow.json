@@ -1,1 +1,129 @@
-{}
+{
+  "name": "Assignment Analysis Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "assignment-analysis",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ],
+      "webhookId": "assignment-analysis"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.body.file_url }}",
+        "responseFormat": "file",
+        "options": {}
+      },
+      "name": "HTTP Request to get File",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        500,
+        300
+      ],
+      "notes": "This node assumes the backend provides a URL to the uploaded file. If not, the webhook must be configured to receive binary data directly."
+    },
+    {
+      "parameters": {
+        "operation": "extract",
+        "source": "file",
+        "options": {}
+      },
+      "name": "Extract Text from File",
+      "type": "n8n-nodes-base.convertFile",
+      "typeVersion": 1,
+      "position": [
+        750,
+        300
+      ],
+      "notes": "This is a placeholder. You might need a community node for specific file types like DOCX (e.g., n8n-nodes-mammoth)."
+    },
+    {
+      "parameters": {
+        "model": "gpt-4",
+        "prompt": "Analyze the following academic text and provide: \n1. The main topic.\n2. The academic level (e.g., High School, Undergraduate, Graduate).\n3. The word count.\n4. A list of potential research questions.\n5. A list of suggested sources based on the content.\n6. A plagiarism score between 0 and 1.\n7. A list of sections that might contain plagiarism.\n8. Recommendations for citation formats.\n\nText: {{ $json.body.text }}",
+        "options": {}
+      },
+      "name": "OpenAI for Analysis",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        300
+      ],
+      "notes": "Connect your OpenAI credentials. You will need to parse the output of this node to match the format required by the backend."
+    },
+    {
+      "parameters": {
+        "url": "http://backend:8000/internal/analysis-results",
+        "authentication": "headerAuth",
+        "options": {},
+        "bodyParameters": "={{ { \"assignment_id\": $json.body.assignment_id, \"original_text\": $json.body.extracted_text, ...etc } }}"
+      },
+      "name": "POST Results to Backend",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1250,
+        300
+      ],
+      "notes": "Configure this node to send all the extracted fields from the OpenAI node to the backend. You must set up the API Key in the 'Header Auth' section (Header Name: X-API-Key, Header Value: your_internal_api_key)."
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request to get File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request to get File": {
+      "main": [
+        [
+          {
+            "node": "Extract Text from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Text from File": {
+      "main": [
+        [
+          {
+            "node": "OpenAI for Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI for Analysis": {
+      "main": [
+        [
+          {
+            "node": "POST Results to Backend",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {},
+  "id": "1"
+}

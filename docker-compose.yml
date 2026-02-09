@@ -1,10 +1,13 @@
 services:
   backend:
-    build: ./backend
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
     ports:
       - "8000:8000"
     volumes:
       - ./backend:/app
+      - ./data:/app/data
     env_file:
       - ./.env
     depends_on:
@@ -14,7 +17,7 @@ services:
   postgres:
     image: pgvector/pgvector:pg16
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
@@ -37,6 +40,7 @@ services:
       - N8N_HOST=0.0.0.0
       - N8N_PORT=5678
       - WEBHOOK_URL=${N8N_WEBHOOK_URL}
+    command: ['start', '--tunnel']
     restart: unless-stopped
 
   pgadmin:
