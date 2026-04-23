@@ -16,4 +16,4 @@ COPY ./data /app/data
 
 # Command to run the application
 # main.py is directly in /app due to the volume mount
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5679", "--reload"]
