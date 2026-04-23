@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: ./backend/Dockerfile
     # ❌ removed port (Coolify should expose it)
+    ports:
+      - '8080:8000'
     volumes:
       - ./backend:/app
       - ./data:/app/data
