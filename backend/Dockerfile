@@ -17,5 +17,6 @@ COPY ./data /app/data
 # This ensures main.py and other modules are available even without a volume mount
 COPY backend/ /app/
 
-# Command to run the application using the new execution block in main.py
-CMD ["python", "main.py"]
+
+# Command to run the application using the absolute path
+CMD ["python3", "/app/main.py"]
