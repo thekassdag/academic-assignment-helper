@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     INTERNAL_API_KEY: str
     N8N_WEBHOOK_URL: str | None = None
     GEMINI_API_KEY: str
+    PORT: int = 8000
+
 
     class Config:
         env_file = ".env"

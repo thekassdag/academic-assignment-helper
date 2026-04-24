@@ -2,13 +2,12 @@ services:
   backend:
     build:
       context: .
-      dockerfile: ./backend/Dockerfile
+      dockerfile: ./Dockerfile
     # ❌ removed port (Coolify should expose it)
     ports:
       - '5679:5679'
     volumes:
-      - ./backend:/app
-      - ./data:/app/data
+      - ./:/app
     env_file:
       - ./.env
     depends_on:
