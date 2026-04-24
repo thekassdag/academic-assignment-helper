@@ -15,6 +15,8 @@ from typing import List
 import aiohttp
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+import uvicorn
+import os
 
 from auth import auth_router, get_current_user
 from models import (
@@ -272,3 +274,8 @@ async def get_analysis_results(
             status="Pending",
             analysis=None,
         )
+
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
