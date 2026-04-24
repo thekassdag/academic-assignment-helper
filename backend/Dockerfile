@@ -17,5 +17,5 @@ COPY ./data /app/data
 # This ensures main.py and other modules are available even without a volume mount
 COPY backend/ /app/
 
-# Command to run the application
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+# Command to run the application using the new execution block in main.py
+CMD ["python", "main.py"]
