@@ -4,16 +4,18 @@ FROM python:3.10-slim
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the requirements file from the mounted backend directory
+# Copy the requirements file from the backend directory
 COPY backend/requirements.txt /app/requirements.txt
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the data directory from the project root into the container's /app/data
-# The build context is the project root, so ./data refers to the host's data directory
 COPY ./data /app/data
 
+# Copy the rest of the backend source code into the container
+# This ensures main.py and other modules are available even without a volume mount
+COPY backend/ /app/
+
 # Command to run the application
-# main.py is directly in /app due to the volume mount
 CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
