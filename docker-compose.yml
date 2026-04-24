@@ -2,12 +2,12 @@ services:
   backend:
     build:
       context: .
-      dockerfile: ./backend/Dockerfile
+      dockerfile: ./Dockerfile
+    # ❌ removed port (Coolify should expose it)
     ports:
-      - "8000:8000"
+      - '5679:5679'
     volumes:
-      - ./backend:/app
-      - ./data:/app/data
+      - ./:/app
     env_file:
       - ./.env
     depends_on:
@@ -16,8 +16,7 @@ services:
 
   postgres:
     image: pgvector/pgvector:pg16
-    ports:
-      - "5433:5432"
+    # ❌ no ports (internal only)
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
@@ -31,7 +30,7 @@ services:
   n8n:
     image: n8nio/n8n
     ports:
-      - "5678:5678"
+      - "5678:5678"  # keep for now (web access)
     volumes:
       - n8n_data:/home/node/.n8n
     env_file:
@@ -40,13 +39,13 @@ services:
       - N8N_HOST=0.0.0.0
       - N8N_PORT=5678
       - WEBHOOK_URL=${N8N_WEBHOOK_URL}
-    command: ['start', '--tunnel']
+    command: ["start"]  # ❌ removed --tunnel
     restart: unless-stopped
 
   pgadmin:
     image: dpage/pgadmin4
     ports:
-      - "5050:80"
+      - "5050:80"  # keep for browser access
     env_file:
       - ./.env
     environment:
