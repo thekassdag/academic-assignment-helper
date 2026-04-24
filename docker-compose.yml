@@ -7,7 +7,6 @@ services:
     ports:
       - '5679:5679'
     volumes:
-      - ./backend:/app
       - ./data:/app/data
     env_file:
       - ./.env
